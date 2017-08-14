@@ -5,20 +5,25 @@ namespace Task5
 {
     class Program
     {
-        public static int Input(bool kek) // ввод числа N
+        public static int Input(bool status) // ввод числа N
         {
-            var number = 0; 
-            bool ok;
+            var number = 0; // переменная для числа
+            bool ok; // показатель корректности ввода
             do
             {
                 try
                 {
                     number = Convert.ToInt32(ReadLine());
-                    if (kek)
+                    if (status) // проверка значения порядка матрицы
                     {
                         if (number < 2)
                         {
-                            WriteLine("порядок матрицы должен быть больше или равен 2");
+                            WriteLine("Порядок матрицы должен быть больше или равен 2");
+                            ok = false;
+                        }
+                        if (number > 100)
+                        {
+                            WriteLine("Введено слишком большое число, повторите ввод");
                             ok = false;
                         }
                         else ok = true;
@@ -41,40 +46,54 @@ namespace Task5
 
         static void Main(string[] args)
         {
-            WriteLine("Введите порядок квадратной матрицы");
-            var n = Input(true);
-            var arr = new int[n, n];
-            for (var i = 0; i < n; i++)
-            for (var j = 0; j < n; j++)
+            bool okay;
+            do
             {
-                WriteLine("Введите элемент {0} строки {1}", j, i);
-                arr[i, j] = Input(false);
-            }
-            WriteLine("Последовательность, полученная в результате анализа элементов строк матрицы: ");
-            bool mem = false, mem2 = false;
-            for (var i = 0; i < n; i++)
-            {
-                if (arr[i, 0] > arr[i, 1]) mem = true;
-                else if (arr[i, 0] < arr[i, 1]) mem2 = true;       
-                for (var j = 1; j < n; j++)
+
+                WriteLine("Введите порядок квадратной матрицы");
+                var n = Input(true); // ввод порядка матрицы
+                var arr = new int[n, n]; // создание матрицы
+                for (var i = 0; i < n; i++) // ввод элементов матрицы
+                for (var j = 0; j < n; j++)
                 {
-                    if (mem)
+                    WriteLine("Введите элемент {0} строки {1}", j, i);
+                    arr[i, j] = Input(false);
+                }
+                WriteLine("Последовательность, полученная в результате анализа элементов строк матрицы: ");
+                bool downSeq = false, upSeq = false; // переменные-показатели типа последовательности
+                for (var i = 0; i < n; i++) // рассчет результата
+                {
+                    // проверка типа последовательности по первым двум элементам
+                    if (arr[i, 0] > arr[i, 1]) downSeq = true; // последовательность убывающая
+                    else if (arr[i, 0] < arr[i, 1]) upSeq = true; // последовательность восходящая
+                    else if (arr[i, 0] == arr[i, 1])
                     {
-                        if (arr[i, j - 1] > arr[i, j]) continue;
-                        mem = false;
+                        downSeq = false;
+                        upSeq = false;
+                    } // не является последовательностью
+                    for (var j = 1; j < n; j++)
+                        // проверка соответствия остальных элементов типу последовательности первых двух
+                    {
+                        if (downSeq)
+                        {
+                            if (arr[i, j - 1] > arr[i, j]) continue;
+                            downSeq = false;
+                            break;
+                        }
+                        if (!upSeq) continue;
+                        if (arr[i, j - 1] < arr[i, j]) continue;
+                        upSeq = false;
                         break;
                     }
-                    if (!mem2) continue;
-                    if (arr[i, j - 1] < arr[i, j]) continue;
-                    mem2 = false;
-                    break;
+                    if (downSeq || upSeq) Write("1"); // вывод результата
+                    else Write("0");
+                    downSeq = false;
+                    upSeq = false;
                 }
-                if (mem || mem2) Write("1"); 
-                else Write("0");
-                mem = false;
-                mem2 = false;
-            }
-            Read();
+                WriteLine("Выйти? y - да/n - нет"); //выход из программы
+                var ans = ReadLine();
+                okay = ans == "y";
+            } while (okay);
         }
     }
 }
