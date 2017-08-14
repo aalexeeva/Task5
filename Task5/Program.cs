@@ -7,7 +7,7 @@ namespace Task5
     {
         public static int Input(bool kek) // ввод числа N
         {
-            int number = 0;
+            var number = 0; 
             bool ok;
             do
             {
@@ -42,8 +42,8 @@ namespace Task5
         static void Main(string[] args)
         {
             WriteLine("Введите порядок квадратной матрицы");
-            int n = Input(true);
-            int[,] arr = new int[n, n];
+            var n = Input(true);
+            var arr = new int[n, n];
             for (var i = 0; i < n; i++)
             for (var j = 0; j < n; j++)
             {
@@ -60,20 +60,14 @@ namespace Task5
                 {
                     if (mem)
                     {
-                        if (arr[i, j - 1] > arr[i, j] != mem)
-                        {
-                            mem = false;
-                            break;
-                        }
+                        if (arr[i, j - 1] > arr[i, j]) continue;
+                        mem = false;
+                        break;
                     }
-                    else if (mem2)
-                    {
-                        if (arr[i, j - 1] < arr[i, j] != mem2)
-                        {
-                            mem2 = false;
-                            break;
-                        }
-                    }
+                    if (!mem2) continue;
+                    if (arr[i, j - 1] < arr[i, j]) continue;
+                    mem2 = false;
+                    break;
                 }
                 if (mem || mem2) Write("1"); 
                 else Write("0");
