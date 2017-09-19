@@ -103,6 +103,7 @@ namespace Task5
                     }
                     if (downSeq || upSeq) Write("1"); // вывод результата
                     else Write("0");
+                    WriteLine();
                     downSeq = false;
                     upSeq = false;
                 }
