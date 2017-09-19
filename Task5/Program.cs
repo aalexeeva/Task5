@@ -18,10 +18,10 @@ namespace Task5
                     {
                         if (number < 2)
                         {
-                            WriteLine("Порядок матрицы должен быть больше или равен 2");
+                            WriteLine("Порядок матрицы должен быть больше или равен 2, повторите ввод");
                             ok = false;
                         }
-                        if (number > 100)
+                        else if (number > 100)
                         {
                             WriteLine("Введено слишком большое число, повторите ввод");
                             ok = false;
@@ -107,7 +107,7 @@ namespace Task5
                     upSeq = false;
                 }
                 okay = Exit();
-            } while (okay);
+            } while (!okay);
         }
     }
 }
